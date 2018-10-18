@@ -12,7 +12,7 @@ Improvements
 * Python 3 support
 * Corpus support from the command line
 * Support for custom characters using a JSON dictionary
-
+* The forward and backward translations are identical, with the exception of full-width numerals being converted to their normalized counterparts.
 
 Install
 -------
