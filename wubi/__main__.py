@@ -1,7 +1,9 @@
-import os
 import argparse
 import json
-from wubi import chinese2wubi, wubi2chinese
+
+# Python 2 support.
+from io import open
+from wubi import to_wubi, from_wubi
 
 
 def wubi():
@@ -9,6 +11,9 @@ def wubi():
     parser.add_argument("-t",
                         help="chinese2wubi: cw, wubi2chinese: wc",
                         default='cw')
+    parser.add_argument("-d",
+                        help="delimiter",
+                        default=" ")
     parser.add_argument("-i", help="Input file", required=True)
     parser.add_argument("-o", help="Output file", required=True)
     parser.add_argument("-custom", help="A JSON file containing a dictionary "
@@ -18,24 +23,20 @@ def wubi():
     if args.t not in ['wc', 'cw']:
         parser.print_help()
         return
-    if not args.c:
-        parser.print_help()
-        return
     if args.custom:
         d = json.loads(open("args.custom"))
-
-    if os.path.file.exists(args.o):
-        raise ValueError("File {} already exists. Aborting".format(args.o))
+    else:
+        d = None
     out = open(args.o, 'w')
     if args.t == "wc":
-        func = wubi2chinese
+        func = from_wubi
     elif args.t == "cw":
-        func = chinese2wubi
+        func = to_wubi
     else:
         raise ValueError("-t must be either 'wc' or 'cw', "
                          "was now {}".format(args.t))
     for line in open(args.i):
-        out.write("{}\n".format(func(line, args.t, d)))
+        out.write("{}\n".format(func(line, delimiter=args.d, dictionary=d)))
 
 
 if __name__ == '__main__':
