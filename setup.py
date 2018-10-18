@@ -3,9 +3,7 @@
 
 from io import open
 
-from setuptools import setup,find_packages
-
-from codecs import open
+from setuptools import setup, find_packages
 from os import path
 
 here = path.abspath(path.dirname(__file__))
@@ -23,9 +21,7 @@ setup(
     author_email='tob-wang@qq.com',
     packages=find_packages(exclude=['contrib', 'docs', 'tests']),
     package_data={
-        '': ['LICENSE'],
-        'wubi': ['wubi.pickle'], },
-    entry_points={"console_scripts": ["wubi = wubi.cmd:wubi", ]},
+        '': ['LICENSE']},
     url='https://github.com/arcsecw/wubi',
     license="BSD",
     classifiers=[
