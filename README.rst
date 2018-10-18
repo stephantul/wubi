@@ -1,7 +1,7 @@
 wubi
 ======
 
-Code for transliterating Chinese characters to their [wubi](https://en.wikipedia.org/wiki/Wubi_method) equivalents.
+Code for transliterating Chinese characters to their `wubi <https://en.wikipedia.org/wiki/Wubi_method>`_ equivalents.
 Wubi is an ASCII representation of Chinese that respects orthographic, but not necessarily semantic or phonological regularities in Chinese characters.
 It has been used successfully in machine translation, and can serve as a "character-level" representation of Chinese characters.
 
