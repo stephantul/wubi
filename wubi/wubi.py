@@ -1,33 +1,13 @@
 # -*- coding: utf-8 -*-
-
-import os
-import sys
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-import itertools
-import unicodedata
-
-import pickle
-
-from _compat import u
-
-__all__ = ['get','data']
+from string import ascii_letters
+from wubi.cw import cw
+from wubi.wc import wc
 
 
 # init wubi dict
 data = {}
-dat = os.path.join(os.path.dirname(__file__), "wubi.pickle")
-
-try :
-    with open(dat) as f:
-        data = pickle.loads(f.read())
-except:
-    pass
-
-if len(data)<1:
-    from cw import cw
-    from wc import wc
-    data['cw'] = cw
-    data['wc'] = wc
+data['cw'] = cw
+data['wc'] = wc
 
 
 def _wubi_generator(chars):
@@ -38,20 +18,20 @@ def _wubi_generator(chars):
     s = []
     for char in chars:
         # handle english in chinese
-        var =['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
-        if char ==' ':
+        var = ascii_letters
+        if char == ' ':
             pass
-        elif char in var :
+        elif char in var:
                 s.append(char)
-                if char==chars[-1]:
+                if char == chars[-1]:
                     yield ''.join(s)
         else:
-            if len(s)!=0:
+            if len(s) != 0:
                 yield ''.join(s)
-                s=[]
+                s = []
             wubi = data['cw'].get(char)
-            if wubi == None:
-                wubi=char
+            if wubi is None:
+                wubi = char
             yield wubi
 
 
@@ -61,20 +41,16 @@ def _chinese_generator(chars, delimiter):
     Chars must be unicode list.
     """
     for char in chars.split(delimiter):
-        chinese = data['wc'].get(char)
-        if chinese ==None:
-                chinese=char
-        yield chinese
-
-def get(s,type='',delimiter=' '):
-    """Return wubi of string, the string must be unicode
-    """
-    #pre process input string
+        yield data['wc'].get(char, char)
 
 
-    if type=='cw':
-        return delimiter.join(_wubi_generator(u(s)))
-    elif type =='wc':
-        return ''.join(_chinese_generator(u(s),delimiter))
+def get(s, type='', delimiter=' ', dictionary=None):
+    """Return wubi of string, the string must be unicode"""
+    if dictionary is not None:
+        data['cw'].update(dictionary)
+    if type == 'cw':
+        return delimiter.join(_wubi_generator(s))
+    elif type == 'wc':
+        return ''.join(_chinese_generator(s, delimiter))
     else:
         return None
