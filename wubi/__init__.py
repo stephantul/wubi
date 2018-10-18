@@ -1,3 +1,4 @@
 # -*- coding: utf-8 -*-
+from .wubi import get
 
-from .wubi import *
+__all__ = ["get"]
