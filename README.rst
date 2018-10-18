@@ -1,56 +1,38 @@
 wubi
 ======
 
-You do not need to modify your model when applied it to Chinese,you can translate chinese chars to wubi ,then you can process chinese chars like english
+Code for transliterating Chinese characters to their [wubi](https://en.wikipedia.org/wiki/Wubi_method) equivalents.
+Wubi is an ASCII representation of Chinese that respects orthographic, but not necessarily semantic or phonological regularities in Chinese characters.
+It has been used successfully in machine translation, and can serve as a "character-level" representation of Chinese characters.
 
-For example if you want to use character-level neural network model in chinese chars, you will find it is beteer to translate them from chinese to wubi at first.
+This code was heavily adapted from: https://github.com/arcsecw/wubi
 
-当你处理汉语时,你不必修改你原来的模型。你可以将汉语翻译成五笔字型码。你就可以像处理英文一样的处理汉语了
+Improvements
+------------
+* Python 3 support
+* Corpus support from the command line
+* Support for custom characters using a JSON dictionary
 
-比如说,如果你想使用一个字符级神经网络模型处理中文,你会发现最好先将这些汉语翻译成五笔字符。
-
-
-重要提示
-------
-
-喜欢就star一下
-
-if you like it , please star
 
 Install
 -------
 
-.. code:: bash
+This version is not on `pip`. If you use `pip`, you will get the non-forked version.
 
-    $ pip install wubi
-
-
-Short introduce
+Short Introduction
 -----
 
 .. code:: python
 
     >>> import wubi
-    >>> print wubi.get('WenChaoWang爱自由','cw')
+    >>> print(wubi.get('WenChaoWang爱自由','cw'))
     WenChaoWang ep thd mh
-
-    >>> print wubi.get('WenChaoWang ep thd mh','wc')
+    >>> print(wubi.get('WenChaoWang ep thd mh','wc'))
     WenChaoWang爱自由
-    >>> print wubi.get('WenChaoWang爱自由','cw','-')
+    >>> print(wubi.get('WenChaoWang爱自由','cw','-'))
     WenChaoWang-ep-thd-mh
-    >>> print wubi.get('WenChaoWang-ep-thd-mh','wc','-')
+    >>> print(wubi.get('WenChaoWang-ep-thd-mh','wc','-'))
     WenChaoWang爱自由
-    >>> data = wubi.data
-    ## data = {
-    'cw':{
-        chinese:wubi,
-        ...
-        }
-    'wc':{
-        wubi:chinese,
-        ...
-        }
-    }
 
 
 notice
@@ -79,4 +61,3 @@ License
 -------
 
 `wubi` is free software, under an MIT-style license. See LICENSE for details.
-
