@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
-from .wubi import get
+from .wubi import to_wubi, from_wubi
 
-__all__ = ["get"]
+__all__ = ["to_wubi", "from_wubi"]

@@ -44,13 +44,15 @@ def _chinese_generator(chars, delimiter):
         yield data['wc'].get(char, char)
 
 
-def get(s, type='', delimiter=' ', dictionary=None):
-    """Return wubi of string, the string must be unicode"""
+def to_wubi(s, delimiter=" ", dictionary=None):
+    """Translate chinese characters to wubi encoding."""
     if dictionary is not None:
         data['cw'].update(dictionary)
-    if type == 'cw':
-        return delimiter.join(_wubi_generator(s))
-    elif type == 'wc':
-        return ''.join(_chinese_generator(s, delimiter))
-    else:
-        return None
+    return delimiter.join(_wubi_generator(s))
+
+
+def from_wubi(s, delimiter=" ", dictionary=None):
+    """Translate wubi encoded characters to chinese."""
+    if dictionary is not None:
+        data['cw'].update(dictionary)
+    return ''.join(_chinese_generator(s, delimiter))
