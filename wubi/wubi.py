@@ -6,11 +6,8 @@ from .wc import wc
 roman = var = ascii_letters + '0123456789' + punctuation
 
 
-def _wubi_generator(characters):
-    """Generate wubi for chars, if char is not chinese character,
-    itself will be returned.
-    Chars must be unicode list.
-    """
+def _wubi_generator(characters, strict):
+    """Generate wubi for character input."""
     buffer = []
     for char in characters:
         # handle roman characters in chinese
@@ -25,30 +22,34 @@ def _wubi_generator(characters):
             if len(buffer) != 0:
                 yield "".join(buffer)
                 buffer = []
-            yield cw.get(char, char)
+            if strict:
+                yield cw[char]
+            else:
+                yield cw.get(char, char)
     else:
         # Yield the buffer at the end.
         yield "".join(buffer)
 
 
-def _chinese_generator(characters, delimiter):
-    """Generate chinese for chars, if char is not chinese character,
-    itself will be returned.
-    Chars must be unicode list.
-    """
+def _chinese_generator(characters, delimiter, strict):
+    """Generate chinese for wubi input."""
     for char in characters.split(delimiter):
-        yield wc.get(char, char)
+        if strict:
+            # Throws keyerror
+            yield wc[char]
+        else:
+            yield wc.get(char, char)
 
 
-def to_wubi(s, delimiter=" ", dictionary=None):
+def to_wubi(s, delimiter=" ", dictionary=None, strict=False):
     """Translate chinese characters to wubi encoding."""
     if dictionary is not None:
         cw.update(dictionary)
-    return delimiter.join(_wubi_generator(s))
+    return delimiter.join(_wubi_generator(s, strict))
 
 
-def from_wubi(s, delimiter=" ", dictionary=None):
+def from_wubi(s, delimiter=" ", dictionary=None, strict=False):
     """Translate wubi encoded characters to chinese."""
     if dictionary is not None:
         wc.update(dictionary)
-    return "".join(_chinese_generator(s, delimiter))
+    return "".join(_chinese_generator(s, delimiter, strict))
